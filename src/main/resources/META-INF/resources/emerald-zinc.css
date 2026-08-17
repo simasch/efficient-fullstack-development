@@ -1,0 +1,37 @@
+/* Aura theme configuration: emerald accent on zinc surfaces, following the OS light/dark preference. */
+html {
+  color-scheme: light dark;
+  --aura-accent-color-dark: #34D399;
+  --aura-accent-color-light: #009966;
+  --aura-background-color-dark: #18181b;
+  --aura-background-color-light: #f4f4f5;
+  --aura-base-radius: 4;
+  --aura-surface-level: -0.5;
+}
+
+/* Navigation: accent-coloured icons on inactive items, a filled container on the current one. */
+vaadin-side-nav-item:not([current]) > vaadin-icon {
+  color: var(--aura-accent-text-color);
+}
+
+vaadin-side-nav-item[current]::part(content) {
+  --vaadin-side-nav-item-background: var(--vaadin-background-container);
+  --vaadin-side-nav-item-border-color: transparent;
+}
+
+/* A badge without a semantic variant is neutral — with an emerald accent, the default
+   accent-coloured badge would be indistinguishable from the success variant. */
+vaadin-badge:not([theme~="filled"], [theme~="success"], [theme~="error"], [theme~="warning"]) {
+  --vaadin-badge-background: var(--vaadin-background-container);
+  --vaadin-badge-border-color: var(--vaadin-border-color-secondary);
+  --vaadin-badge-text-color: var(--vaadin-text-color-secondary);
+}
+
+/* Secondary buttons stay neutral so the accent colour is reserved for primary actions. */
+:is(vaadin-button, vaadin-menu-bar-button, vaadin-upload-button):not([theme~="primary"], [theme~="tertiary"]) {
+  --aura-accent-color-light: var(--aura-neutral);
+  --aura-accent-color-dark: var(--aura-neutral);
+  --vaadin-button-background: var(--vaadin-background-container);
+  --vaadin-button-border-color: transparent;
+  --vaadin-button-shadow: none;
+}

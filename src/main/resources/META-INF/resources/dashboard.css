@@ -1,0 +1,33 @@
+.stat-card,
+.project-card {
+  /* The dashboard cards sit one surface level above the flat page background. */
+  --aura-surface-level: 4;
+  background: var(--aura-surface-color);
+  border: 1px solid var(--vaadin-border-color-secondary);
+  border-radius: var(--vaadin-radius-l);
+  padding: var(--vaadin-padding-m);
+}
+
+.stat-card {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 2.5rem;
+  font-weight: var(--aura-font-weight-semibold);
+  line-height: 1.2;
+}
+
+.stat-number.alert {
+  color: var(--aura-red-text);
+}
+
+.stat-caption {
+  color: var(--vaadin-text-color-secondary);
+  font-size: var(--aura-font-size-s);
+}
+
+.project-card-title {
+  font-weight: var(--aura-font-weight-semibold);
+}

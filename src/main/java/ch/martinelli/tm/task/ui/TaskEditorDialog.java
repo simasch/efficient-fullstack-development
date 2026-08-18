@@ -22,12 +22,12 @@ public class TaskEditorDialog extends Dialog {
 
 	final TaskForm form;
 
-	final Button save = new Button("Save");
+	final Button save = new Button(getTranslation("action.save"));
 
-	final Button cancel = new Button("Cancel");
+	final Button cancel = new Button(getTranslation("action.cancel"));
 
 	public TaskEditorDialog(List<User> users, List<ProjectListItem> projects) {
-		setHeaderTitle("Task");
+		setHeaderTitle(getTranslation("view.task.title"));
 
 		form = new TaskForm(users, projects);
 		add(form);

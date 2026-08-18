@@ -4,6 +4,7 @@ import ch.martinelli.tm.core.domain.UserService;
 import ch.martinelli.tm.core.domain.UserWithRoles;
 import ch.martinelli.tm.core.domain.UsernameAlreadyTakenException;
 import ch.martinelli.tm.core.ui.components.Notifier;
+import ch.martinelli.tm.core.ui.i18n.BusinessRuleMessage;
 import ch.martinelli.tm.domain.EmailAddress;
 import ch.martinelli.tm.domain.Role;
 import com.vaadin.flow.component.UI;
@@ -156,7 +157,8 @@ public class UserView extends Div implements HasUrlParameter<String>, HasDynamic
 		var emailField = new TextField(getTranslation("user.field.email"));
 		binder.forField(emailField)
 			.asRequired()
-			.withConverter(EmailAddress::new, email -> email == null ? "" : email.value(), "Not a valid email address")
+			.withConverter(EmailAddress::new, email -> email == null ? "" : email.value(),
+					getTranslation("validation.email.invalid"))
 			.bind(u -> u.getUser().getEmail(), (u, e) -> u.getUser().setEmail(e));
 
 		var passwordField = new PasswordField(getTranslation("user.field.password"));
@@ -208,8 +210,7 @@ public class UserView extends Div implements HasUrlParameter<String>, HasDynamic
 						UI.getCurrent().navigate(UserView.class);
 					}
 					catch (UsernameAlreadyTakenException e) {
-						Notifier.error(Objects.requireNonNullElse(e.getMessage(),
-								getTranslation("notification.user.save.error")));
+						Notifier.error(BusinessRuleMessage.translate(e));
 					}
 				}
 				catch (ValidationException ex) {

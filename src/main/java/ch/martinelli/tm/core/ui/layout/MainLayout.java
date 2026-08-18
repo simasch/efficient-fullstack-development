@@ -61,7 +61,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 
 	private void addHeaderContent() {
 		var toggle = new DrawerToggle();
-		toggle.setAriaLabel("Menu toggle");
+		toggle.setAriaLabel(getTranslation("layout.menu.toggle"));
 
 		viewTitle.addClassName("view-title");
 
@@ -69,7 +69,7 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 	}
 
 	private void addDrawerContent() {
-		var appName = new Div("Task Management");
+		var appName = new Div(getTranslation("app.name"));
 		appName.addClassName("app-name");
 
 		var header = new Header(appName);
@@ -83,13 +83,16 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 		var nav = new SideNav();
 
 		if (accessAnnotationChecker.hasAccess(DashboardView.class)) {
-			nav.addItem(new SideNavItem("Dashboard", DashboardView.class, VaadinIcon.DASHBOARD.create()));
+			nav.addItem(new SideNavItem(getTranslation("view.dashboard.title"), DashboardView.class,
+					VaadinIcon.DASHBOARD.create()));
 		}
 		if (accessAnnotationChecker.hasAccess(TaskListView.class)) {
-			nav.addItem(new SideNavItem("Tasks", TaskListView.class, VaadinIcon.TASKS.create()));
+			nav.addItem(
+					new SideNavItem(getTranslation("view.tasks.title"), TaskListView.class, VaadinIcon.TASKS.create()));
 		}
 		if (accessAnnotationChecker.hasAccess(ProjectListView.class)) {
-			nav.addItem(new SideNavItem("Projects", ProjectListView.class, VaadinIcon.FOLDER.create()));
+			nav.addItem(new SideNavItem(getTranslation("view.projects.title"), ProjectListView.class,
+					VaadinIcon.FOLDER.create()));
 		}
 		if (accessAnnotationChecker.hasAccess(UserView.class)) {
 			nav.addItem(new SideNavItem(getTranslation("view.users.title"), UserView.class, VaadinIcon.USER.create()));
@@ -108,12 +111,12 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 		var languageSwitchEn = new Button("EN");
 		languageSwitchEn.addThemeVariants(ButtonVariant.TERTIARY, ButtonVariant.SMALL);
 		languageSwitchEn.setEnabled(!Locale.ENGLISH.getLanguage().equals(locale.getLanguage()));
-		languageSwitchEn.addClickListener(_ -> switchLanguage(Locale.ENGLISH.getLanguage()));
+		languageSwitchEn.addClickListener(_ -> switchLanguage(Locale.ENGLISH));
 
 		var languageSwitchDe = new Button("DE");
 		languageSwitchDe.addThemeVariants(ButtonVariant.TERTIARY, ButtonVariant.SMALL);
 		languageSwitchDe.setEnabled(!Locale.GERMAN.getLanguage().equals(locale.getLanguage()));
-		languageSwitchDe.addClickListener(_ -> switchLanguage(Locale.GERMAN.getLanguage()));
+		languageSwitchDe.addClickListener(_ -> switchLanguage(Locale.GERMAN));
 
 		var languageLayout = new HorizontalLayout(languageSwitchEn, languageSwitchDe);
 		languageLayout.addClassName("language-switch");
@@ -149,8 +152,14 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 		return footer;
 	}
 
-	private void switchLanguage(String language) {
-		UI.getCurrent().getSession().setLocale(Locale.of(language, UI.getCurrent().getLocale().getCountry()));
+	/**
+	 * Switches to one of the locales the {@code I18NProvider} provides. Setting it on the
+	 * session propagates it to every UI of the session and makes it survive the reload;
+	 * the reload itself is what re-creates the views with the new language, because the
+	 * views read their texts once while they are built.
+	 */
+	private void switchLanguage(Locale locale) {
+		UI.getCurrent().getSession().setLocale(locale);
 		UI.getCurrent().getPage().reload();
 	}
 

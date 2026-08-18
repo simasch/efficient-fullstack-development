@@ -17,6 +17,7 @@ import static ch.martinelli.tm.db.tables.Project.PROJECT;
 import static ch.martinelli.tm.db.tables.Task.TASK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
@@ -50,7 +51,11 @@ class UserServiceTest {
 
 		var duplicate = newUser("simon");
 		assertThatThrownBy(() -> userService.save(duplicate)).isInstanceOf(UsernameAlreadyTakenException.class)
-			.hasMessageContaining("simon");
+			.asInstanceOf(type(UsernameAlreadyTakenException.class))
+			.satisfies(e -> {
+				assertThat(e.getMessageKey()).isEqualTo("error.username.already.taken");
+				assertThat(e.getMessageParameters()).containsExactly("simon");
+			});
 	}
 
 	private UserWithRoles newUser(String username) {

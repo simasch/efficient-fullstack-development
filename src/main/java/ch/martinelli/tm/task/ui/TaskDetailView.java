@@ -2,6 +2,8 @@ package ch.martinelli.tm.task.ui;
 
 import ch.martinelli.tm.core.domain.UserService;
 import ch.martinelli.tm.core.ui.components.Notifier;
+import ch.martinelli.tm.core.ui.i18n.BusinessRuleMessage;
+import ch.martinelli.tm.domain.BusinessRuleException;
 import ch.martinelli.tm.domain.Task;
 import ch.martinelli.tm.project.domain.ProjectService;
 import ch.martinelli.tm.task.domain.TaskService;
@@ -12,13 +14,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.binder.ValidationException;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.NotFoundException;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.jooq.exception.DataChangedException;
-
-import java.util.Objects;
 
 /**
  * A URL that identifies a task is a URL a user can bookmark and paste into a chat
@@ -27,14 +27,13 @@ import java.util.Objects;
  */
 @PermitAll
 @Route("task/:taskId([0-9]+)")
-@PageTitle("Task")
-public class TaskDetailView extends VerticalLayout implements BeforeEnterObserver {
+public class TaskDetailView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle {
 
 	private final transient TaskService taskService;
 
 	final TaskForm form;
 
-	final Button save = new Button("Save");
+	final Button save = new Button(getTranslation("action.save"));
 
 	public TaskDetailView(TaskService taskService, UserService userService, ProjectService projectService) {
 		this.taskService = taskService;
@@ -45,6 +44,11 @@ public class TaskDetailView extends VerticalLayout implements BeforeEnterObserve
 		save.addClickListener(_ -> save());
 
 		add(form, save);
+	}
+
+	@Override
+	public String getPageTitle() {
+		return getTranslation("view.task.title");
 	}
 
 	@Override
@@ -63,17 +67,17 @@ public class TaskDetailView extends VerticalLayout implements BeforeEnterObserve
 	private void save() {
 		try {
 			taskService.save(form.getTask());
-			Notifier.success("Task saved");
+			Notifier.success(getTranslation("notification.task.saved"));
 			UI.getCurrent().navigate(TaskListView.class);
 		}
 		catch (ValidationException e) {
 			// the form marks the invalid fields itself
 		}
 		catch (DataChangedException e) {
-			Notifier.error("Someone else changed this task. Please reload and try again.");
+			Notifier.error(getTranslation("notification.task.concurrent.modification"));
 		}
-		catch (IllegalStateException e) {
-			Notifier.error(Objects.requireNonNullElse(e.getMessage(), "The task could not be saved"));
+		catch (BusinessRuleException e) {
+			Notifier.error(BusinessRuleMessage.translate(e));
 		}
 	}
 

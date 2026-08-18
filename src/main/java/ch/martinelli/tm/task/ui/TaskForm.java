@@ -28,21 +28,21 @@ import java.util.List;
  */
 public class TaskForm extends Composite<FormLayout> {
 
-	final TextField title = new TextField("Title");
+	final TextField title = new TextField(getTranslation("task.field.title"));
 
-	final TextArea description = new TextArea("Description");
+	final TextArea description = new TextArea(getTranslation("task.field.description"));
 
-	final DatePicker dueDate = new DatePicker("Due date");
+	final DatePicker dueDate = new DatePicker(getTranslation("task.field.due.date"));
 
-	final ComboBox<Priority> priority = new ComboBox<>("Priority");
+	final ComboBox<Priority> priority = new ComboBox<>(getTranslation("task.field.priority"));
 
-	final ComboBox<TaskStatus> status = new ComboBox<>("Status");
+	final ComboBox<TaskStatus> status = new ComboBox<>(getTranslation("task.field.status"));
 
-	final ComboBox<User> assignee = new ComboBox<>("Assignee");
+	final ComboBox<User> assignee = new ComboBox<>(getTranslation("task.field.assignee"));
 
-	final ComboBox<ProjectListItem> project = new ComboBox<>("Project");
+	final ComboBox<ProjectListItem> project = new ComboBox<>(getTranslation("task.field.project"));
 
-	final IntegerField estimateHours = new IntegerField("Estimate (hours)");
+	final IntegerField estimateHours = new IntegerField(getTranslation("task.field.estimate.hours"));
 
 	private final Binder<Task> binder = new Binder<>(Task.class);
 
@@ -52,7 +52,9 @@ public class TaskForm extends Composite<FormLayout> {
 		this.projects = projects;
 
 		priority.setItems(Priority.values());
+		priority.setItemLabelGenerator(item -> getTranslation("priority." + item.name()));
 		status.setItems(TaskStatus.values());
+		status.setItemLabelGenerator(item -> getTranslation("task.status." + item.name()));
 		assignee.setItems(users);
 		assignee.setItemLabelGenerator(User::fullName);
 		assignee.setClearButtonVisible(true);
@@ -63,27 +65,27 @@ public class TaskForm extends Composite<FormLayout> {
 		// binder reads through the accessor and writeRecord() calls the canonical
 		// constructor with the bound values.
 		binder.forField(title)
-			.asRequired("A title is required")
-			.withValidator(new StringLengthValidator("Maximum 200 characters", 0, 200))
+			.asRequired(getTranslation("validation.task.title.required"))
+			.withValidator(new StringLengthValidator(getTranslation("validation.task.title.length"), 0, 200))
 			.bind("title");
 
 		binder.forField(description).withNullRepresentation("").bind("description");
 
 		binder.forField(dueDate).bind("dueDate");
 
-		binder.forField(priority).asRequired("Select a priority").bind("priority");
+		binder.forField(priority).asRequired(getTranslation("validation.task.priority.required")).bind("priority");
 
-		binder.forField(status).asRequired("Select a status").bind("status");
+		binder.forField(status).asRequired(getTranslation("validation.task.status.required")).bind("status");
 
 		binder.forField(assignee).bind("assignee");
 
 		binder.forField(project)
-			.asRequired("Select a project")
+			.asRequired(getTranslation("validation.task.project.required"))
 			.withConverter(item -> item == null ? null : item.id(), this::toProjectListItem)
 			.bind("projectId");
 
 		binder.forField(estimateHours)
-			.withValidator(new IntegerRangeValidator("Between 1 and 1000 hours", 1, 1000))
+			.withValidator(new IntegerRangeValidator(getTranslation("validation.task.estimate.range"), 1, 1000))
 			.bind("estimateHours");
 
 		// The id and the version are not editable, but writeRecord() requires every

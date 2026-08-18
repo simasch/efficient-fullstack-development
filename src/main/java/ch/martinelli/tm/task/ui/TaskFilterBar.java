@@ -37,30 +37,31 @@ public class TaskFilterBar extends Composite<HorizontalLayout> {
 		// an accessible name — a screen reader loses it as soon as the field has a value
 		// —
 		// and a bare "Status" would collide with the status field of the editor form.
-		text.setPlaceholder("Search");
-		text.setAriaLabel("Search tasks");
+		text.setPlaceholder(getTranslation("task.filter.search"));
+		text.setAriaLabel(getTranslation("task.filter.search.aria"));
 		text.setClearButtonVisible(true);
 		text.setValueChangeMode(ValueChangeMode.LAZY);
 
-		status.setPlaceholder("Status");
-		status.setAriaLabel("Filter by status");
+		status.setPlaceholder(getTranslation("task.filter.status"));
+		status.setAriaLabel(getTranslation("task.filter.status.aria"));
 		status.setItems(TaskStatus.values());
+		status.setItemLabelGenerator(item -> getTranslation("task.status." + item.name()));
 		status.setClearButtonVisible(true);
 
-		assignee.setPlaceholder("Assignee");
-		assignee.setAriaLabel("Filter by assignee");
+		assignee.setPlaceholder(getTranslation("task.filter.assignee"));
+		assignee.setAriaLabel(getTranslation("task.filter.assignee.aria"));
 		assignee.setItems(users);
 		assignee.setItemLabelGenerator(User::fullName);
 		assignee.setClearButtonVisible(true);
 
-		project.setPlaceholder("Project");
-		project.setAriaLabel("Filter by project");
+		project.setPlaceholder(getTranslation("task.filter.project"));
+		project.setAriaLabel(getTranslation("task.filter.project.aria"));
 		project.setItems(projects);
 		project.setItemLabelGenerator(ProjectListItem::name);
 		project.setClearButtonVisible(true);
 
-		dueBefore.setPlaceholder("Due before");
-		dueBefore.setAriaLabel("Filter by due date");
+		dueBefore.setPlaceholder(getTranslation("task.filter.due.before"));
+		dueBefore.setAriaLabel(getTranslation("task.filter.due.before.aria"));
 		dueBefore.setClearButtonVisible(true);
 
 		text.addValueChangeListener(_ -> fireFilterChange());

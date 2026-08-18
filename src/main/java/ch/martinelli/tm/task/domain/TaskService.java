@@ -1,5 +1,6 @@
 package ch.martinelli.tm.task.domain;
 
+import ch.martinelli.tm.domain.BusinessRuleException;
 import ch.martinelli.tm.domain.Task;
 import ch.martinelli.tm.domain.TaskFilter;
 import ch.martinelli.tm.domain.TaskListItem;
@@ -43,15 +44,16 @@ public class TaskService {
 	 */
 	@Transactional
 	public void save(Task task) {
-		if (task.id() == null) {
+		Long id = task.id();
+		if (id == null) {
 			taskRepository.insert(task);
 		}
 		else {
-			var current = taskRepository.findById(task.id())
-				.orElseThrow(() -> new IllegalStateException("Task %d no longer exists".formatted(task.id())));
+			var current = taskRepository.findById(id)
+				.orElseThrow(() -> new BusinessRuleException("error.task.no.longer.exists", id));
 			if (!current.status().canTransitionTo(task.status())) {
-				throw new IllegalStateException(
-						"A task in status %s cannot move to %s".formatted(current.status(), task.status()));
+				throw new BusinessRuleException("error.task.invalid.status.transition", current.status(),
+						task.status());
 			}
 			taskRepository.update(task);
 		}

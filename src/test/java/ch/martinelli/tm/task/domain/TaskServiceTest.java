@@ -1,6 +1,7 @@
 package ch.martinelli.tm.task.domain;
 
 import ch.martinelli.tm.TestcontainersConfiguration;
+import ch.martinelli.tm.domain.BusinessRuleException;
 import ch.martinelli.tm.domain.EmailAddress;
 import ch.martinelli.tm.domain.Priority;
 import ch.martinelli.tm.domain.Task;
@@ -17,6 +18,7 @@ import static ch.martinelli.tm.db.tables.Project.PROJECT;
 import static ch.martinelli.tm.db.tables.Task.TASK;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
@@ -73,8 +75,12 @@ class TaskServiceTest {
 
 		// OPEN -> BLOCKED is not an allowed transition
 		Task blocked = withStatus(task, TaskStatus.BLOCKED);
-		assertThatThrownBy(() -> taskService.save(blocked)).isInstanceOf(IllegalStateException.class)
-			.hasMessageContaining("cannot move");
+		assertThatThrownBy(() -> taskService.save(blocked)).isInstanceOf(BusinessRuleException.class)
+			.asInstanceOf(type(BusinessRuleException.class))
+			.satisfies(e -> {
+				assertThat(e.getMessageKey()).isEqualTo("error.task.invalid.status.transition");
+				assertThat(e.getMessageParameters()).containsExactly(TaskStatus.OPEN, TaskStatus.BLOCKED);
+			});
 	}
 
 	private Task withStatus(Task task, TaskStatus status) {

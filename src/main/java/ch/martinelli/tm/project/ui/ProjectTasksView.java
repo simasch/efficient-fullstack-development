@@ -6,8 +6,8 @@ import ch.martinelli.tm.task.ui.TaskGrid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterObserver;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.NotFoundException;
-import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import ch.martinelli.tm.project.domain.ProjectService;
 import com.vaadin.flow.spring.annotation.RouteScopeOwner;
@@ -15,8 +15,7 @@ import jakarta.annotation.security.PermitAll;
 
 @PermitAll
 @Route(value = "project/:projectId([0-9]+)/tasks", layout = ProjectLayout.class)
-@PageTitle("Project Tasks")
-public class ProjectTasksView extends VerticalLayout implements BeforeEnterObserver {
+public class ProjectTasksView extends VerticalLayout implements BeforeEnterObserver, HasDynamicTitle {
 
 	private final transient ProjectService projectService;
 
@@ -37,6 +36,11 @@ public class ProjectTasksView extends VerticalLayout implements BeforeEnterObser
 		setSizeFull();
 		add(taskGrid);
 		expand(taskGrid);
+	}
+
+	@Override
+	public String getPageTitle() {
+		return getTranslation("view.project.tasks.title");
 	}
 
 	@Override

@@ -30,7 +30,7 @@ public class ProjectLayout extends VerticalLayout implements RouterLayout, HasDy
 
 	@Override
 	public String getPageTitle() {
-		return Objects.requireNonNullElse(selectedProject.getName(), "Project");
+		return Objects.requireNonNullElse(selectedProject.getName(), getTranslation("view.project.title"));
 	}
 
 }

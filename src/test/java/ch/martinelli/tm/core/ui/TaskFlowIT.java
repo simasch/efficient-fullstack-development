@@ -41,7 +41,7 @@ class TaskFlowIT extends PlaywrightIT {
 		// a page-wide lookup would find that one first
 		var form = dialog.getContentLocator();
 		TextFieldElement.getByLabel(form, "Title").setValue("Offline mode v2");
-		ComboBoxElement.getByLabel(form, "Status").selectItem("IN_PROGRESS");
+		ComboBoxElement.getByLabel(form, "Status").selectItem("In progress");
 
 		ButtonElement.getByText(page, "Save").click();
 

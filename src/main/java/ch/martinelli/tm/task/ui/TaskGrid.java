@@ -8,9 +8,12 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.data.provider.QuerySortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.renderer.LitRenderer;
+import com.vaadin.flow.data.renderer.LocalDateRenderer;
 import org.jooq.Field;
 import org.jooq.OrderField;
 
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.List;
 
 import static ch.martinelli.tm.db.tables.Task.TASK;
@@ -26,23 +29,33 @@ public class TaskGrid extends Grid<TaskListItem> {
 	private TaskFilter filter = TaskFilter.empty();
 
 	public TaskGrid() {
-		addColumn(TaskListItem::title).setHeader("Title")
+		addColumn(TaskListItem::title).setHeader(getTranslation("task.field.title"))
 			.setSortProperty(TASK.TITLE.getName())
 			.setFlexGrow(1)
 			.setAutoWidth(true);
-		addColumn(TaskListItem::dueDate).setHeader("Due date")
+		addColumn(new LocalDateRenderer<>(TaskListItem::dueDate, this::dateFormatter, ""))
+			.setHeader(getTranslation("task.field.due.date"))
 			.setSortProperty(TASK.DUE_DATE.getName())
 			.setAutoWidth(true);
 		addColumn(LitRenderer.<TaskListItem>of("<vaadin-badge theme=\"${item.theme}\">${item.status}</vaadin-badge>")
-			.withProperty("status", item -> item.status().name())
+			.withProperty("status", item -> getTranslation("task.status." + item.status().name()))
 			.withProperty("theme", item -> switch (item.status()) {
 				case OPEN -> "";
 				case IN_PROGRESS -> "filled";
 				case BLOCKED -> "error";
 				case DONE -> "success";
-			})).setHeader("Status").setSortProperty(TASK.STATUS.getName()).setAutoWidth(true);
-		addColumn(TaskListItem::assigneeName).setHeader("Assignee").setAutoWidth(true);
-		addColumn(TaskListItem::projectName).setHeader("Project").setAutoWidth(true);
+			})).setHeader(getTranslation("task.field.status"))
+			.setSortProperty(TASK.STATUS.getName())
+			.setAutoWidth(true);
+		addColumn(TaskListItem::assigneeName).setHeader(getTranslation("task.field.assignee")).setAutoWidth(true);
+		addColumn(TaskListItem::projectName).setHeader(getTranslation("task.field.project")).setAutoWidth(true);
+	}
+
+	/**
+	 * Resolved for every rendered cell, so the format follows the locale the user picked.
+	 */
+	private DateTimeFormatter dateFormatter() {
+		return DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).withLocale(getLocale());
 	}
 
 	public void setFilter(TaskFilter filter) {

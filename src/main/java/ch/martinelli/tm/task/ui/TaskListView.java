@@ -2,6 +2,8 @@ package ch.martinelli.tm.task.ui;
 
 import ch.martinelli.tm.core.domain.UserService;
 import ch.martinelli.tm.core.ui.components.Notifier;
+import ch.martinelli.tm.core.ui.i18n.BusinessRuleMessage;
+import ch.martinelli.tm.domain.BusinessRuleException;
 import ch.martinelli.tm.domain.Task;
 import ch.martinelli.tm.project.domain.ProjectService;
 import ch.martinelli.tm.task.domain.TaskService;
@@ -9,12 +11,10 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.HasDynamicTitle;
 import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.jooq.exception.DataChangedException;
-
-import java.util.Objects;
 
 /**
  * The view owns the orchestration, the components own the presentation. Components
@@ -22,8 +22,7 @@ import java.util.Objects;
  */
 @PermitAll
 @Route("tasks")
-@PageTitle("Tasks")
-public class TaskListView extends VerticalLayout {
+public class TaskListView extends VerticalLayout implements HasDynamicTitle {
 
 	final TaskGrid taskGrid;
 
@@ -31,7 +30,7 @@ public class TaskListView extends VerticalLayout {
 
 	final TaskEditorDialog editorDialog;
 
-	final Button newTask = new Button("New task");
+	final Button newTask = new Button(getTranslation("action.task.new"));
 
 	public TaskListView(TaskService taskService, UserService userService, ProjectService projectService) {
 		var users = userService.findAllActive();
@@ -57,13 +56,13 @@ public class TaskListView extends VerticalLayout {
 				taskService.save(event.getTask());
 				editorDialog.close();
 				taskGrid.refresh();
-				Notifier.success("Task saved");
+				Notifier.success(getTranslation("notification.task.saved"));
 			}
 			catch (DataChangedException e) {
-				Notifier.error("Someone else changed this task. Please reload and try again.");
+				Notifier.error(getTranslation("notification.task.concurrent.modification"));
 			}
-			catch (IllegalStateException e) {
-				Notifier.error(Objects.requireNonNullElse(e.getMessage(), "The task could not be saved"));
+			catch (BusinessRuleException e) {
+				Notifier.error(BusinessRuleMessage.translate(e));
 			}
 		});
 		editorDialog.addOpenedChangeListener(event -> {
@@ -82,6 +81,11 @@ public class TaskListView extends VerticalLayout {
 		setSizeFull();
 		add(toolbar, taskGrid);
 		expand(taskGrid);
+	}
+
+	@Override
+	public String getPageTitle() {
+		return getTranslation("view.tasks.title");
 	}
 
 }

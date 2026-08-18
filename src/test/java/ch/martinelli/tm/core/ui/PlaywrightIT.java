@@ -46,8 +46,11 @@ public abstract class PlaywrightIT {
 
 	@BeforeEach
 	void setUp() {
+		// The locale is pinned: the application is translated, and the assertions below
+		// match the English texts
 		browserContext = browser
-			.newContext(new Browser.NewContextOptions().setBaseURL("http://localhost:%d/".formatted(localServerPort)));
+			.newContext(new Browser.NewContextOptions().setBaseURL("http://localhost:%d/".formatted(localServerPort))
+				.setLocale("en-US"));
 		page = browserContext.newPage();
 	}
 

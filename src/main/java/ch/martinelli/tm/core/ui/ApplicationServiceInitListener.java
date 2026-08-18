@@ -3,6 +3,7 @@ package ch.martinelli.tm.core.ui;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
+import com.vaadin.flow.i18n.I18NProvider;
 import com.vaadin.flow.server.ErrorEvent;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
@@ -29,9 +30,8 @@ public class ApplicationServiceInitListener implements VaadinServiceInitListener
 		UI ui = UI.getCurrent();
 		if (ui != null) {
 			ui.access(() -> {
-				Notification notification = Notification.show(
-						"Something went wrong. Please try again or contact support.", 5000,
-						Notification.Position.MIDDLE);
+				Notification notification = Notification.show(I18NProvider.translate("notification.unexpected.error"),
+						5000, Notification.Position.MIDDLE);
 				notification.addThemeVariants(NotificationVariant.ERROR);
 			});
 		}

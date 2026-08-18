@@ -2,6 +2,7 @@ package ch.martinelli.tm.core.ui.components;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.NativeLabel;
+import com.vaadin.flow.i18n.I18NProvider;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -27,7 +28,7 @@ public class Notifier extends Notification {
 
 	public static void error(String message) {
 		var text = new NativeLabel(message);
-		var close = new Button("OK");
+		var close = new Button(I18NProvider.translate("action.ok"));
 
 		var content = new HorizontalLayout(text, close);
 		content.setAlignItems(FlexComponent.Alignment.CENTER);

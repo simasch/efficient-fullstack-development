@@ -23,8 +23,9 @@ public class NotFoundView extends VerticalLayout implements HasErrorParameter<No
 
 	@Override
 	public int setErrorParameter(BeforeEnterEvent event, ErrorParameter<NotFoundException> parameter) {
-		add(new H2("Page not found"), new Paragraph("The page " + event.getLocation().getPath() + " does not exist."),
-				new RouterLink("Back to the dashboard", DashboardView.class));
+		add(new H2(getTranslation("error.not.found.title")),
+				new Paragraph(getTranslation("error.not.found.message", event.getLocation().getPath())),
+				new RouterLink(getTranslation("error.not.found.link"), DashboardView.class));
 		return HttpStatusCode.NOT_FOUND.getCode();
 	}
 

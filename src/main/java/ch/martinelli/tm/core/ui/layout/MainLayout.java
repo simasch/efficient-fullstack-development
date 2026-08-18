@@ -32,7 +32,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.server.menu.MenuConfiguration;
-import com.vaadin.flow.theme.lumo.LumoIcon;
 
 import java.util.Locale;
 
@@ -136,7 +135,6 @@ public class MainLayout extends AppLayout implements AfterNavigationObserver {
 			var div = new Div();
 			div.add(avatar);
 			div.add(user.getFullName());
-			div.add(LumoIcon.DROPDOWN.create());
 			div.addClassName("user-menu-item");
 			userName.add(div);
 			userName.getSubMenu().addItem(getTranslation("action.sign.out"), _ -> securityContext.logout());

@@ -15,7 +15,8 @@ either.
 - **Backend**: Java 25, Spring Boot 4.1, jOOQ 3.21, PostgreSQL
 - **Frontend**: Vaadin 25 (Flow)
 - **Database**: PostgreSQL with Flyway migrations (`src/main/resources/db/migration`, `V1__…` naming)
-- **Security**: Spring Security with stateless JWT (`VaadinSecurityConfigurer` + `VaadinStatelessSecurityConfigurer`)
+- **Security**: Spring Security with stateless JWT (`VaadinSecurityConfigurer` + `VaadinStatelessSecurityConfigurer`),
+  method security (`@EnableMethodSecurity` + `@PreAuthorize` on the services)
 - **Testing**: JUnit 5, Vaadin Browserless Testing, Playwright + Drama Finder, Testcontainers
 - **Code Quality**: ErrorProne, NullAway, Spring Java Format, ArchUnit, JaCoCo
 
@@ -62,6 +63,7 @@ ch.martinelli.tm/
 - Only `..ui..` and `..security..` packages may access Vaadin classes.
 - `..domain..` may only be accessed by the UI, security, and generated database layers.
 - `core` may not access the feature modules (task, project, dashboard, user).
+- Every `@Route` class carries an access annotation (`@PermitAll`, `@RolesAllowed`, `@AnonymousAllowed`, `@DenyAll`).
 
 ### Conventions
 - Repositories are hand-written classes around `DSLContext` — no DAO framework. Dynamic filters use the
@@ -73,6 +75,9 @@ ch.martinelli.tm/
 - Schema changes: new Flyway migration + `./mvnw compile` to regenerate jOOQ classes. The `V1` schema is
   printed in Chapter 4 of the book and must not be edited — append migrations instead.
 - Null safety: main packages are `@NullMarked` (JSpecify); NullAway runs in the build.
+- Authorisation is declared twice on purpose: the route carries the annotation, and the service method that performs
+  the operation carries `@PreAuthorize("hasRole('" + Role.X + "')")`. Read-only lookups the whole application needs
+  (`UserService.findAllActive`, `ProjectService.findAll`) stay open to any authenticated user.
 
 ## Book Cross-References
 
@@ -81,4 +86,6 @@ ch.martinelli.tm/
 - Chapter 5: builds this application (security is new material there)
 - Chapter 6: browserless UI testing (`AbstractBrowserlessTest`)
 - Chapter 7: Playwright E2E (`PlaywrightIT`)
+- Chapter 8: performance and security hardening (the `V3` trigram index, method security, the JWT lifetime, the
+  ArchUnit route rule)
 - Chapter 9: deployment (production build, Fly.io, Neon)

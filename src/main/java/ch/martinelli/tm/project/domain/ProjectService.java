@@ -3,6 +3,8 @@ package ch.martinelli.tm.project.domain;
 import ch.martinelli.tm.db.tables.records.ProjectRecord;
 import ch.martinelli.tm.domain.ProjectListItem;
 import ch.martinelli.tm.domain.ProjectOverview;
+import ch.martinelli.tm.domain.Role;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +35,9 @@ public class ProjectService {
 		return projectRepository.findOverviewByOwner(ownerId);
 	}
 
+	// The "New project" button is hidden from non-administrators; this is the same rule
+	// where the operation lives, so it holds for every other caller too
+	@PreAuthorize("hasRole('" + Role.ADMIN + "')")
 	@Transactional
 	public void save(ProjectRecord project) {
 		projectRepository.save(project);

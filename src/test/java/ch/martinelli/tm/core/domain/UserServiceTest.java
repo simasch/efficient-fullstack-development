@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Set;
 
@@ -19,6 +21,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.InstanceOfAssertFactories.type;
 
+/**
+ * Every test declares the user it runs as: the user administration is restricted with
+ * {@code @PreAuthorize}, so who is logged in is part of the test case, not of the setup.
+ */
 @SpringBootTest
 @Import(TestcontainersConfiguration.class)
 class UserServiceTest {
@@ -37,6 +43,7 @@ class UserServiceTest {
 	}
 
 	@Test
+	@WithMockUser(username = "admin", roles = Role.ADMIN)
 	void save_storesUserWithRoles() {
 		userService.save(newUser("simon"));
 
@@ -46,6 +53,7 @@ class UserServiceTest {
 	}
 
 	@Test
+	@WithMockUser(username = "admin", roles = Role.ADMIN)
 	void save_withTakenUsername_throwsUsernameAlreadyTakenException() {
 		userService.save(newUser("simon"));
 
@@ -56,6 +64,20 @@ class UserServiceTest {
 				assertThat(e.getMessageKey()).isEqualTo("error.username.already.taken");
 				assertThat(e.getMessageParameters()).containsExactly("simon");
 			});
+	}
+
+	@Test
+	@WithMockUser(username = "alice", roles = Role.USER)
+	void save_asPlainUser_isDenied() {
+		var user = newUser("simon");
+
+		assertThatThrownBy(() -> userService.save(user)).isInstanceOf(AccessDeniedException.class);
+	}
+
+	@Test
+	@WithMockUser(username = "alice", roles = Role.USER)
+	void findAllWithRoles_asPlainUser_isDenied() {
+		assertThatThrownBy(() -> userService.findAllWithRoles(0, 10)).isInstanceOf(AccessDeniedException.class);
 	}
 
 	private UserWithRoles newUser(String username) {

@@ -9,6 +9,7 @@ import org.springframework.boot.security.autoconfigure.actuate.web.servlet.Endpo
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +21,12 @@ import java.util.Base64;
 
 @Configuration
 @EnableWebSecurity
+// Route annotations protect routes; @PreAuthorize on the services protects the
+// operations, whoever calls them
+@EnableMethodSecurity
 public class SecurityConfiguration {
+
+	private static final int JWT_LIFETIME_SECONDS = 1800;
 
 	private final String authSecret;
 
@@ -44,8 +50,12 @@ public class SecurityConfiguration {
 
 		http.with(VaadinSecurityConfigurer.vaadin(), configurer -> configurer.loginView(LoginView.class));
 
+		// The JWT is not revocable: deactivating a user or removing a role takes effect
+		// when the current token expires, so the lifetime is set explicitly rather than
+		// left at the default of 1800 seconds
 		http.with(new VaadinStatelessSecurityConfigurer<>(),
 				stateless -> stateless.issuer("ch.martinelli.tm")
+					.expiresIn(JWT_LIFETIME_SECONDS)
 					.withSecretKey()
 					.secretKey(new SecretKeySpec(Base64.getDecoder().decode(authSecret), JwsAlgorithms.HS256)));
 

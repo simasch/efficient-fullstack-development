@@ -2,8 +2,14 @@ package ch.martinelli.tm;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
+import jakarta.annotation.security.DenyAll;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import org.junit.jupiter.api.Test;
 
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.noClasses;
 import static com.tngtech.archunit.library.Architectures.layeredArchitecture;
 
@@ -70,6 +76,26 @@ class ArchitectureTest {
 			.should()
 			.accessClassesThat()
 			.resideInAnyPackage(FEATURE_MODULES)
+			.check(classes);
+	}
+
+	/**
+	 * Vaadin denies a route without an access annotation, so a missing annotation is not
+	 * a hole — it is a view that silently stops being reachable. This rule makes the
+	 * decision explicit for every route.
+	 */
+	@Test
+	void every_route_declares_its_access_rule() {
+		classes().that()
+			.areAnnotatedWith(Route.class)
+			.should()
+			.beAnnotatedWith(PermitAll.class)
+			.orShould()
+			.beAnnotatedWith(RolesAllowed.class)
+			.orShould()
+			.beAnnotatedWith(AnonymousAllowed.class)
+			.orShould()
+			.beAnnotatedWith(DenyAll.class)
 			.check(classes);
 	}
 

@@ -33,25 +33,34 @@ public class TaskFilterBar extends Composite<HorizontalLayout> {
 	final DatePicker dueBefore = new DatePicker();
 
 	public TaskFilterBar(List<User> users, List<ProjectListItem> projects) {
+		// Every control has an aria label as well as a placeholder. A placeholder is not
+		// an accessible name — a screen reader loses it as soon as the field has a value
+		// —
+		// and a bare "Status" would collide with the status field of the editor form.
 		text.setPlaceholder("Search");
+		text.setAriaLabel("Search tasks");
 		text.setClearButtonVisible(true);
 		text.setValueChangeMode(ValueChangeMode.LAZY);
 
 		status.setPlaceholder("Status");
+		status.setAriaLabel("Filter by status");
 		status.setItems(TaskStatus.values());
 		status.setClearButtonVisible(true);
 
 		assignee.setPlaceholder("Assignee");
+		assignee.setAriaLabel("Filter by assignee");
 		assignee.setItems(users);
 		assignee.setItemLabelGenerator(User::fullName);
 		assignee.setClearButtonVisible(true);
 
 		project.setPlaceholder("Project");
+		project.setAriaLabel("Filter by project");
 		project.setItems(projects);
 		project.setItemLabelGenerator(ProjectListItem::name);
 		project.setClearButtonVisible(true);
 
 		dueBefore.setPlaceholder("Due before");
+		dueBefore.setAriaLabel("Filter by due date");
 		dueBefore.setClearButtonVisible(true);
 
 		text.addValueChangeListener(_ -> fireFilterChange());

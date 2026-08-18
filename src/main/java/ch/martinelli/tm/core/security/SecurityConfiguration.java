@@ -4,7 +4,6 @@ import ch.martinelli.tm.core.ui.LoginView;
 import com.vaadin.flow.spring.security.VaadinSecurityConfigurer;
 import com.vaadin.flow.spring.security.stateless.VaadinStatelessSecurityConfigurer;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.health.actuate.endpoint.HealthEndpoint;
 import org.springframework.boot.security.autoconfigure.actuate.web.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -42,10 +41,12 @@ public class SecurityConfiguration {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) {
 		// The stylesheets imported by styles.css are fetched by the browser, also on the
-		// login screen
+		// login screen. The actuator endpoints are anonymous because the platform probes
+		// them without a login; in production both live on a management port that is not
+		// exposed publicly (application-prod.properties).
 		http.authorizeHttpRequests(c -> c.requestMatchers("/*.css", "/images/*.png", "/line-awesome/*")
 			.permitAll()
-			.requestMatchers(EndpointRequest.to(HealthEndpoint.class))
+			.requestMatchers(EndpointRequest.to("health", "prometheus"))
 			.permitAll());
 
 		http.with(VaadinSecurityConfigurer.vaadin(), configurer -> configurer.loginView(LoginView.class));

@@ -45,7 +45,7 @@ There are two base classes for UI tests:
 - `AbstractBrowserlessTest` for fast [browserless testing](https://vaadin.com/docs/latest/flow/testing/browserless)
   (UI unit tests without a browser) — see Chapter 6 of the book
 - `PlaywrightIT` for end-to-end tests with [Playwright](https://playwright.dev) and
-  [Mopo](https://github.com/viritin/mopo) — see Chapter 7 of the book
+  [Drama Finder](https://github.com/parttio/dramafinder) — see Chapter 7 of the book
 
 ## Building for Production
 

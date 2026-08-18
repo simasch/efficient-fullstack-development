@@ -16,7 +16,7 @@ either.
 - **Frontend**: Vaadin 25 (Flow)
 - **Database**: PostgreSQL with Flyway migrations (`src/main/resources/db/migration`, `V1__…` naming)
 - **Security**: Spring Security with stateless JWT (`VaadinSecurityConfigurer` + `VaadinStatelessSecurityConfigurer`)
-- **Testing**: JUnit 5, Vaadin Browserless Testing, Playwright + Mopo, Testcontainers
+- **Testing**: JUnit 5, Vaadin Browserless Testing, Playwright + Drama Finder, Testcontainers
 - **Code Quality**: ErrorProne, NullAway, Spring Java Format, ArchUnit, JaCoCo
 
 ## Development Commands

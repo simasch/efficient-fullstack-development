@@ -27,7 +27,7 @@ class TranslationProviderTest {
 	/**
 	 * The regression this provider exists for: {@code ResourceBundle} falls back to the
 	 * JVM default locale, so on a German server a request for English used to return the
-	 * German bundle — and switching the language back to English did nothing.
+	 * German bundle, and switching the language back to English did nothing.
 	 */
 	@Test
 	void english_is_not_affected_by_a_german_default_locale() {

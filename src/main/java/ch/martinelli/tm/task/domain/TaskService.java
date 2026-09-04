@@ -39,7 +39,7 @@ public class TaskService {
 	}
 
 	/**
-	 * Saves the task. The status transition rule is enforced here, on the server —
+	 * Saves the task. The status transition rule is enforced here, on the server;
 	 * whatever the form did, the service is the boundary that guarantees it.
 	 */
 	@Transactional

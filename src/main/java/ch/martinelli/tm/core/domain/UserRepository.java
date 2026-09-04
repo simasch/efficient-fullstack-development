@@ -61,7 +61,7 @@ public class UserRepository {
 
 	/**
 	 * Saves the user and replaces its roles. Throws Spring's
-	 * {@code DuplicateKeyException} if the username is already taken — the service layer
+	 * {@code DuplicateKeyException} if the username is already taken; the service layer
 	 * translates that into a business exception.
 	 */
 	public void save(UserWithRoles userWithRoles) {

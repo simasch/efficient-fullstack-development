@@ -17,7 +17,7 @@ import com.vaadin.flow.shared.Registration;
 import java.util.List;
 
 /**
- * The filter bar does not know that a grid exists — it fires a {@link FilterChangeEvent}
+ * The filter bar does not know that a grid exists; it fires a {@link FilterChangeEvent}
  * and whoever is interested listens.
  */
 public class TaskFilterBar extends Composite<HorizontalLayout> {
@@ -34,9 +34,9 @@ public class TaskFilterBar extends Composite<HorizontalLayout> {
 
 	public TaskFilterBar(List<User> users, List<ProjectListItem> projects) {
 		// Every control has an aria label as well as a placeholder. A placeholder is not
-		// an accessible name — a screen reader loses it as soon as the field has a value
-		// —
-		// and a bare "Status" would collide with the status field of the editor form.
+		// an accessible name (a screen reader loses it as soon as the field has a
+		// value), and a bare "Status" would collide with the status field of the editor
+		// form.
 		text.setPlaceholder(getTranslation("task.filter.search"));
 		text.setAriaLabel(getTranslation("task.filter.search.aria"));
 		text.setClearButtonVisible(true);

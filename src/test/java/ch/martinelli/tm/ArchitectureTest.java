@@ -81,7 +81,7 @@ class ArchitectureTest {
 
 	/**
 	 * Vaadin denies a route without an access annotation, so a missing annotation is not
-	 * a hole — it is a view that silently stops being reachable. This rule makes the
+	 * a hole; it is a view that silently stops being reachable. This rule makes the
 	 * decision explicit for every route.
 	 */
 	@Test

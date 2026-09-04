@@ -1,11 +1,11 @@
-# Task Management — Efficient Full-Stack Development
+# Task Management: Efficient Full-Stack Development
 
 The example application for the book **Efficient Full-Stack Development** by Simon Martinelli.
 
 The application is a task management system built with the stack the book teaches:
 
 - [Spring Boot](https://spring.io/projects/spring-boot) as the foundation
-- [Vaadin Flow](https://vaadin.com) for the user interface — the whole UI is written in Java
+- [Vaadin Flow](https://vaadin.com) for the user interface, with the whole UI written in Java
 - [jOOQ](https://www.jooq.org) for type-safe database access, generated from the real schema
 - [PostgreSQL](https://www.postgresql.org) with [Flyway](https://flywaydb.org) migrations
 - [Testcontainers](https://testcontainers.com) for code generation and integration testing
@@ -17,7 +17,7 @@ Chapter 5 of the book builds this application step by step; the other chapters u
 ## Prerequisites
 
 - Java 25 (Java 21 or newer works)
-- [Docker](https://www.docker.com) — Testcontainers starts throwaway PostgreSQL containers for the jOOQ code
+- [Docker](https://www.docker.com): Testcontainers starts throwaway PostgreSQL containers for the jOOQ code
   generation and the integration tests
 
 ## Running the Application
@@ -43,9 +43,9 @@ If you want to run against your own PostgreSQL instead, point the `spring.dataso
 There are two base classes for UI tests:
 
 - `AbstractBrowserlessTest` for fast [browserless testing](https://vaadin.com/docs/latest/flow/testing/browserless)
-  (UI unit tests without a browser) — see Chapter 6 of the book
+  (UI unit tests without a browser); see Chapter 6 of the book
 - `PlaywrightIT` for end-to-end tests with [Playwright](https://playwright.dev) and
-  [Drama Finder](https://github.com/parttio/dramafinder) — see Chapter 7 of the book
+  [Drama Finder](https://github.com/parttio/dramafinder); see Chapter 7 of the book
 
 ## Building for Production
 

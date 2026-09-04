@@ -7,7 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This is the companion application for the book "Efficient Full-Stack Development": a task management system
 that integrates Vaadin Flow with jOOQ on Spring Boot. It is based on the
 [vaadin-jooq-template](https://github.com/martinellich/vaadin-jooq-template). Chapter 5 of the book builds it
-step by step and extracts its code listings from this repository — keep listings and code in sync when changing
+step by step and extracts its code listings from this repository; keep listings and code in sync when changing
 either.
 
 ## Technology Stack
@@ -66,14 +66,14 @@ ch.martinelli.tm/
 - Every `@Route` class carries an access annotation (`@PermitAll`, `@RolesAllowed`, `@AnonymousAllowed`, `@DenyAll`).
 
 ### Conventions
-- Repositories are hand-written classes around `DSLContext` — no DAO framework. Dynamic filters use the
+- Repositories are hand-written classes around `DSLContext`, with no DAO framework. Dynamic filters use the
   `noCondition()` pattern; grid projections are records mapped with `Records.mapping(...)`.
 - The `task` table uses optimistic locking (`version` column). UI round trips check the version explicitly in
   the UPDATE; `record.store()` relies on jOOQ's `executeWithOptimisticLocking`.
 - Views expose package-private component fields for browserless tests, and forms are usable standalone
   (outside dialogs).
 - Schema changes: new Flyway migration + `./mvnw compile` to regenerate jOOQ classes. The `V1` schema is
-  printed in Chapter 4 of the book and must not be edited — append migrations instead.
+  printed in Chapter 4 of the book and must not be edited; append migrations instead.
 - Null safety: main packages are `@NullMarked` (JSpecify); NullAway runs in the build.
 - Authorisation is declared twice on purpose: the route carries the annotation, and the service method that performs
   the operation carries `@PreAuthorize("hasRole('" + Role.X + "')")`. Read-only lookups the whole application needs
@@ -81,8 +81,8 @@ ch.martinelli.tm/
 
 ## Book Cross-References
 
-- Chapter 3: Vaadin — view/component shapes (`TaskListView` orchestration, `TaskForm`, events)
-- Chapter 4: jOOQ — schema, codegen setup, `TaskRepository`, Testcontainers tests
+- Chapter 3: Vaadin, view/component shapes (`TaskListView` orchestration, `TaskForm`, events)
+- Chapter 4: jOOQ, schema, codegen setup, `TaskRepository`, Testcontainers tests
 - Chapter 5: builds this application (security is new material there)
 - Chapter 6: browserless UI testing (`AbstractBrowserlessTest`)
 - Chapter 7: Playwright E2E (`PlaywrightIT`)

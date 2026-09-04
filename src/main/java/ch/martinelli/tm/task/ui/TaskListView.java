@@ -18,7 +18,7 @@ import org.jooq.exception.DataChangedException;
 
 /**
  * The view owns the orchestration, the components own the presentation. Components
- * communicate through events and never talk to services — only the view does.
+ * communicate through events and never talk to services; only the view does.
  */
 @PermitAll
 @Route("tasks")

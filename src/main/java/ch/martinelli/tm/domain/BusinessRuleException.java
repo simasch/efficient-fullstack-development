@@ -5,7 +5,7 @@ import org.jspecify.annotations.Nullable;
 /**
  * A business rule the user broke. The domain does not know which language the user reads,
  * so the exception carries a message key and its parameters instead of a finished
- * sentence — the UI layer resolves both against the translation catalog.
+ * sentence; the UI layer resolves both against the translation catalog.
  */
 public class BusinessRuleException extends RuntimeException {
 

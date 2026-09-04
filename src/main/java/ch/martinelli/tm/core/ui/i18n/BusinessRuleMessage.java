@@ -8,9 +8,9 @@ import java.util.Locale;
 
 /**
  * Turns a {@link BusinessRuleException} into a sentence in the language of the current
- * UI. A parameter that is an enum constant is a translation key of its own —
- * {@code TaskStatus.IN_PROGRESS} becomes {@code task.status.IN_PROGRESS} — so a rule that
- * names a status reads correctly in every language.
+ * UI. A parameter that is an enum constant is a translation key of its own
+ * ({@code TaskStatus.IN_PROGRESS} becomes {@code task.status.IN_PROGRESS}), so a rule
+ * that names a status reads correctly in every language.
  */
 public final class BusinessRuleMessage {
 

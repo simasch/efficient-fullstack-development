@@ -12,7 +12,7 @@ import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertTha
 
 /**
  * The happy flow through the task list: filter, open a task, change it, save it. Every
- * wait in this test is an assertion — there is no sleep.
+ * wait in this test is an assertion; there is no sleep.
  */
 class TaskFlowIT extends PlaywrightIT {
 
@@ -24,7 +24,7 @@ class TaskFlowIT extends PlaywrightIT {
 
 		var grid = GridElement.get(page);
 
-		// The filter bar reacts lazily, so the assertions — not a sleep — wait for the
+		// The filter bar reacts lazily, so the assertions, not a sleep, wait for the
 		// reload
 		TextFieldElement.getByLabel(page, "Search tasks").setValue("Offline");
 

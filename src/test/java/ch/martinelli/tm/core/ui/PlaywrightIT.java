@@ -86,7 +86,7 @@ public abstract class PlaywrightIT {
 	/**
 	 * The cells of a grid that the user can actually see, matched by their text. A
 	 * {@code vaadin-grid} keeps the cell content of earlier result sets in the DOM as
-	 * hidden elements, so a plain locator still finds rows that are long gone — and the
+	 * hidden elements, so a plain locator still finds rows that are long gone, and the
 	 * row lookups by index can resolve one of those recycled rows right after a reload.
 	 * Matching on visible cells makes both the "is shown" and the "is gone" assertion
 	 * reliable, and it retries like every other Playwright assertion.

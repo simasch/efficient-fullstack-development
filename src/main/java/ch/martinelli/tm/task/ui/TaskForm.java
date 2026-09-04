@@ -61,7 +61,7 @@ public class TaskForm extends Composite<FormLayout> {
 		project.setItems(projects);
 		project.setItemLabelGenerator(ProjectListItem::name);
 
-		// Records have no setters, so the bindings are by record component name — the
+		// Records have no setters, so the bindings are by record component name; the
 		// binder reads through the accessor and writeRecord() calls the canonical
 		// constructor with the bound values.
 		binder.forField(title)
@@ -89,7 +89,7 @@ public class TaskForm extends Composite<FormLayout> {
 			.bind("estimateHours");
 
 		// The id and the version are not editable, but writeRecord() requires every
-		// record component to be bound — invisible bindings carry them through the edit.
+		// record component to be bound; invisible bindings carry them through the edit.
 		binder.forField(new ReadOnlyHasValue<Long>(_ -> {
 		})).bind("id");
 		binder.forField(new ReadOnlyHasValue<Integer>(_ -> {

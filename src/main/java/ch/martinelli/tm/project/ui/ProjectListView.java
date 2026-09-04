@@ -45,8 +45,8 @@ public class ProjectListView extends VerticalLayout implements HasDynamicTitle {
 		grid.addItemClickListener(event -> UI.getCurrent()
 			.navigate(ProjectTasksView.class, new RouteParameters("projectId", String.valueOf(event.getItem().id()))));
 
-		// Route-level access control is declared with annotations; in-view decisions —
-		// like who may create a project — are made programmatically.
+		// Route-level access control is declared with annotations; in-view decisions,
+		// like who may create a project, are made programmatically.
 		newProject.setVisible(securityContext.hasRole(Role.ADMIN));
 		newProject.addThemeVariants(ButtonVariant.PRIMARY);
 		newProject.addClickListener(_ -> openProjectDialog(securityContext));

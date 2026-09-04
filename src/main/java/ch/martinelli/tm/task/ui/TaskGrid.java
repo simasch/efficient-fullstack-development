@@ -19,7 +19,7 @@ import java.util.List;
 import static ch.martinelli.tm.db.tables.Task.TASK;
 
 /**
- * The task grid: presentation only. The data comes from whoever owns the grid — the view
+ * The task grid: presentation only. The data comes from whoever owns the grid: the view
  * wires the lazy loading callbacks, the grid keeps the current filter so the callbacks
  * can ask for it.
  */

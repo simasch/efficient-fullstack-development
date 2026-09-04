@@ -12,8 +12,8 @@ import java.util.Locale;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * The domain throws keys, not sentences — this is where they become a message the user
- * can read, in the language the language switcher selected.
+ * The domain throws keys, not sentences; this is where they become a message the user can
+ * read, in the language the language switcher selected.
  */
 class BusinessRuleMessageTest extends AbstractBrowserlessTest {
 

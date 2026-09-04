@@ -19,7 +19,7 @@ vaadin-side-nav-item[current]::part(content) {
   --vaadin-side-nav-item-border-color: transparent;
 }
 
-/* A badge without a semantic variant is neutral — with an emerald accent, the default
+/* A badge without a semantic variant is neutral: with an emerald accent, the default
    accent-coloured badge would be indistinguishable from the success variant. */
 vaadin-badge:not([theme~="filled"], [theme~="success"], [theme~="error"], [theme~="warning"]) {
   --vaadin-badge-background: var(--vaadin-background-container);

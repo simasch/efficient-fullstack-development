@@ -21,7 +21,7 @@
         <vaadin.version>25.2.6</vaadin.version>
         <line-awesome.version>2.1.0</line-awesome.version>
 
-        <jooq.version>3.21.7</jooq.version>
+        <jooq.version>3.21.8</jooq.version>
         <jooq-utilities.version>1.1.4</jooq-utilities.version>
 
         <groovy-maven-plugin.version>2.1.1</groovy-maven-plugin.version>

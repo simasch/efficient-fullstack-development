@@ -26,7 +26,7 @@
 
         <groovy-maven-plugin.version>2.1.1</groovy-maven-plugin.version>
 
-        <playwright.version>1.65.0</playwright.version>
+        <playwright.version>1.65.1</playwright.version>
         <dramafinder.version>2.2.0</dramafinder.version>
         <archunit.version>1.5.1</archunit.version>
         <jacoco.version>0.8.16</jacoco.version>
